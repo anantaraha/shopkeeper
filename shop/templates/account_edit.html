@@ -1,0 +1,14 @@
+{% extends 'form_generic.html' %}
+
+{% block title %}Edit Account Details{% endblock %}
+
+{% block cardtitle %}Edit Account Details{% endblock %}
+
+{% block description %}
+<h2>{{ object.full_name }} <span class="fs-5 fst-italic text-muted">@{{ object }}</span></h2>
+{% endblock %}
+
+{% block action %}
+<a href="{% url 'account-detail' %}" class="btn btn-outline-secondary">Cancel</a>
+<input class="btn btn-success" type="submit" value="Save Changes" form="my_form">
+{% endblock %}

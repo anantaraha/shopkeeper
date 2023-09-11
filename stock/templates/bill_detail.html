@@ -1,0 +1,117 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Bill Detail{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'stock/css/style_bill_detail.css' %}">
+<script src="{% static 'stock/js/script_bill_detail.js' %}"></script>
+{% endblock %}
+
+{% block navtitle %}Bill Detail: {{ object }}{% endblock %}
+
+{% block content %}
+<div class="col-sm-7 p-4" id="detail_container">
+
+    <div class="card" id="detail_area">
+
+        <div class="card-body overflow-auto">
+            <p class="display-6">{{ object }}</p>
+            <hr>
+
+            <dl class="row h5">
+                <dt class="col-sm-4">Bill ID</dt>
+                <dd class="col-sm-8">{{ object.id }}</dd>
+                
+                <dt class="col-sm-4">Date</dt>
+                <dd class="col-sm-8">{{ object.date }}</dd>
+                
+                <dt class="col-sm-4">Time</dt>
+                <dd class="col-sm-8">{{ object.time }}</dd>
+                
+                <dt class="col-sm-4">Profit</dt>
+                <dd class="col-sm-8">{{ object.profit }}</dd>
+            </dl>
+            <hr>
+
+            <h4><strong>Categories involved</strong></h4>
+            <p>
+                <h5>
+                    {% for cat in object.categories %}
+                        {% if cat %}
+                            <span class="badge bg-secondary rounded-pill">{{ cat }}</span>
+                        {% endif %}
+                    {% endfor %}
+                </h5>
+            </p>
+            <hr>
+
+            <h4><strong>Products included ({{ object.product_count }})</strong></h4>
+            <p>
+                {{ object.display_items }}
+            </p>
+
+        </div>
+        
+    </div>
+</div>
+
+<div class="col-sm-5 p-4 text-monospace" id="memo_container">
+    <div class="card" id="memo_area">
+
+        <div class="border-bottom d-flex justify-content-between p-2">
+            <div class="col-auto h5 text-secondary mx-2 my-auto"><strong>Memo</strong></div>
+            <div class="col-auto">
+                <button class="btn btn-primary btn-sm" id="btn_print">Print memo</button>
+            </div>
+        </div>
+
+        <div class="card-body overflow-auto" id="memo_content">
+
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <td class="text-center" colspan="3">Shop name</td>
+                            <td class="text-end align-middle" colspan="3" rowspan="2">{{ object.date }} {{ object.time }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="3">Shop address</td>
+                        </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>product</th>
+                            <th>unit</th>
+                            <th>price/unit</th>
+                            <th>quantity</th>
+                            <th>price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for memo_item in object.memo %}
+                        <tr>
+                        {% for value in memo_item.values %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4"></th>
+                            <th class="text-center" colspan="2">total={{ object.total }}</th>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="6">Thank you for being with us.</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+        </div>
+    </div>
+    
+    
+
+    
+    
+</div>
+{% endblock %}

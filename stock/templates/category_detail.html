@@ -1,0 +1,89 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Category Detail{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'stock/css/style_category_detail.css' %}" />
+{% endblock %}
+
+{% block navtitle %}Category Detail: {{ object }}{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card p-2" id="category_box">
+        <div class="px-3">
+            <h2 class="display-6 pb-2 pt-3">{{ object.label }}</h2>
+            <div class="row">
+                <div class="col-auto ms-auto">
+                    <a class="btn btn-danger" href="{% url 'category-delete' pk=object.id %}">Delete category</a>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-primary" href="{% url 'category-edit' pk=object.id %}">Edit category</a>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-auto">
+                    <h4>Products <span class="badge bg-secondary rounded-pill">{{ object.product_count }}</span></h4>
+                </div>
+                <div class="col-auto">
+                    <h4>Sales <span class="badge bg-secondary rounded-pill">{{ object.sale_count }}</span></h4>
+                </div>
+                <div class="col-auto">
+                    <h4>Popularity <span class="badge bg-secondary rounded-pill">{{ object.popularity }}</span></h4>
+                </div>
+            </div>
+            <hr>
+            <h4 class="text-title">Products of this category</h4>
+        </div>
+        <div class="card-body overflow-auto">
+            {% if product_list %}
+            <table class="table">
+                <tbody>
+                    {% for product in product_list %}
+                    <tr>
+                        <td><a href="{{ product.get_absolute_url }}?back={{ request.get_full_path|urlencode:'' }}">{{ product.name }}</a></td>
+                        <td>{{ product.brand }}</td>
+                        {% if product.available %}
+                        <td><span class="text-success">{{ product.quantity }} {{ product.unit_label }}</span></td>
+                        {% else %}
+                        <td><span class="text-danger">{{ product.quantity }} {{ product.unit_label }}</span></td>
+                        {% endif %}
+                        <td>{{ product.price }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-justify my-4 text-center">
+                No product for this category
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="recent_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Recent sales from this category</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <div class="list-group-flush">
+                {% if product_sales %}
+                {% for product_sale in product_sales %}
+                <li class="list-group-item">
+                    [{{ product_sale.bill.date }}, {{ product_sale.bill.time }}] [Quantity: {{ product_sale.quantity }}]
+                    <br>
+                    <a href="{{ product_sale.bill.get_absolute_url }}?back={{ request.get_full_path|urlencode:'' }}">{{ product_sale.bill }}</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <h5 class="text-muted text-center my-5">No recent sales for this product</h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

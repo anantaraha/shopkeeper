@@ -1,0 +1,111 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Staff Detail{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'shop/css/style_staff_detail.css' %}" />
+{% endblock %}
+
+{% block navtitle %}Staff Detail: {{ object.full_name }}{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card p-2" id="staff_box">
+        <div class="px-3">
+            <h2 class="display-6 pt-3">{{ object.full_name }} <span class="fs-4 fst-italic text-muted">@{{ object.username }}</span></h2>
+            <div class="row">
+                <div class="col-auto">
+                    {% if object.admin %}
+                    <h4>
+                        <span class="badge rounded-pill bg-secondary">⭐Admin</span>
+                    </h4>
+                    {% endif %}
+                </div>
+                <div class="col-auto ms-auto">
+                    {% ifequal object.username user.get_username %}
+                    <a class="btn btn-danger disabled" href="{% url 'staff-delete' pk=object.id %}">Delete staff</a>
+                    {% else %}
+                    <a class="btn btn-danger" href="{% url 'staff-delete' pk=object.id %}">Delete staff</a>
+                    {% endifequal %}
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-primary" href="{% url 'staff-edit' pk=object.id %}">Edit details</a>
+                </div>
+                <div class="col-auto">
+                    {% ifequal object.username user.get_username %}
+                    <a class="btn btn-primary" href="{% url 'staff-credential-edit' pk=object.id %}">Edit credentials</a>
+                    {% else %}
+                    <a class="btn btn-primary disabled" href="{% url 'staff-credential-edit' pk=object.id %}">Edit credentials</a>
+                    {% endifequal %}
+                </div>
+            </div>
+            <hr class="mb-0 pb-0">
+        </div>
+        <div class="card-body overflow-auto">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Staff ID</td>
+                        <td id="info_id">{{ object.staff_id }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Username</td>
+                        <td id="info_username">{{ object.username }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>First name</td>
+                        <td id="info_first_name">{{ object.first_name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Last name</td>
+                        <td id="info_last_name">{{ object.last_name }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Email</td>
+                        <td id="info_email">{{ object.email }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Born</td>
+                        <td id="info_born">{{ object.born }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Age</td>
+                        <td id="info_age">{{ object.age }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Salary</td>
+                        <td id="info_salary">{{ object.salary }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Address</td>
+                        <td id="info_address">{{ object.address }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="activity_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Staff activities</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <div class="list-group-flush">
+                <h4>Last login time</h4>
+                <h6 class="fs-6 text-muted">{{ object.user.last_login }}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'shop/css/style_cart.css' %}">
+<script src="{% static 'shop/js/script_cart.js' %}"></script>
+{% endblock %}
+
+{% block navtitle %}Cart{% endblock %}
+
+{% block content %}
+
+<!--Cart listing area-->
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card overflow-auto" id="cart_box">
+        <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price/Unit</th>
+                <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody id="cart_list">
+
+            </tbody>
+            </table>
+    </div>
+    <div class="row align-items-center" id="checkout_box">
+        <div class="col-3 text-center">
+            <button type="button" class="btn btn-outline-danger btn-lg" id="btn_reset">Reset</button>
+        </div>
+        <div class="col-3 text-center">
+            <h4><strong>Items(s):  <span id="product_count"></span> [<span id="total_quantity"></span>]</strong></h4>
+        </div>
+        <div class="col-3 text-center">
+            <h4><strong>Total:  <span id="total_price"></span></strong></h4>
+        </div>
+        <div class="col-3 text-center">
+            <button type="button" class="btn btn-success btn-lg" id="btn_checkout">Checkout</button>
+        </div>
+    </div>
+</div>
+
+<!--Product input & selection area-->
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="row align-items-end" id="search_box">
+        <div class="input-group pb-2">
+            <input type="text" id="input_id" class="form-control" placeholder="Enter product ID" aria-label="Product ID">
+        </div>
+    </div>
+    <div class="card overflow-auto" id="selection_box">
+        <div class="list-group-flush" id="product_list">
+            {% if object_list %}
+            {% for item in object_list %}
+            {% if item.available %}
+            <button class="list-group-item list-group-item-action" id="item_{{ item.id }}" data-id="{{ item.id }}" data-brand="{{ item.brand }}" data-price="{{ item.price }}" data-unit-label="{{ item.unit_label }}" data-quantity="{{ item.quantity }}" data-available="{{ item.available }}">{{ item.name }}</button>
+            {% else %}
+            <button disabled class="list-group-item list-group-item-action" id="item_{{ item.id }}" data-id="{{ item.id }}" data-brand="{{ item.brand }}" data-price="{{ item.price }}" data-unit-label="{{ item.unit_label }}" data-quantity="{{ item.quantity }}" data-available="{{ item.available }}">{{ item.name }} [Unavailable]</button>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="card-body" id="product_details">
+            <div class="row justify-content-center" id="description_area">
+                <div class="row justify-content-center">
+                    <h3 class="card-title" id="product_name"></h3>
+                </div>
+                <hr>
+                <div class="row justify-content-center">
+                    <h6><strong>Category:  </strong><span id="product_category"></span></h6>
+                    <h6><strong>Brand:  </strong><span id="product_brand"></span></h6>
+                    <h6><strong>Price:  </strong><span id="product_price"></span></h6>
+                    <h6><strong>Available: </strong><span id="product_available"></span> [<span id="product_quantity"></span>]</h6>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center mt-5" id="quantity_area">
+                <div class="row justify-content-center">
+                    <h4>Enter quantity:</h4>
+                </div>
+                <hr>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="input_quantity" aria-label="Quantity" min="1">
+                        <span class="input-group-text" id="product_unit_label"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row justify-content-center mt-5" id="action_area">
+                <div class="col-auto p-2">
+                    <button type="button" class="btn btn-secondary" id="btn_cancel_product">Cancel</button>
+                </div>
+                <div class="col-auto p-2">
+                    <button type="button" class="btn btn-primary" id="btn_add_product">Add to cart</button>
+                </div>
+                <div class="col-auto p-2">
+                    <button type="button" class="btn btn-secondary" id="btn_unavailable_product" disabled>Not available</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<!--Toast messages-->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+    <div class="toast hide" id="toast_qty_exceed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <strong class="me-auto">Invalid Quantity!!!</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body bg-danger text-white">
+            Entered quantity higher than in stock. Please correct it.
+        </div>
+    </div>
+    <div class="toast hide" id="toast_checkout_error" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger text-white">
+            <strong class="me-auto">Checkout Error!!!</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-white" id="toast_checkout_error_content">
+        </div>
+    </div>
+</div>
+{% endblock %}

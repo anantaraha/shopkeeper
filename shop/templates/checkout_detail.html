@@ -1,0 +1,98 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'shop/css/style_checkout_detail.css' %}">
+<script src="{% static 'shop/js/script_checkout_detail.js' %}"></script>
+{% endblock %}
+
+{% block navtitle %}Checkout Detail{% endblock %}
+
+{% block content %}
+<div class="col-sm-7 p-4" id="detail_container">
+    <div class="card" id="detail_area">
+        <div class="card-body align-items-start py-4 overflow-auto">
+            <p class="display-6 pb-4">Checkout successful</p>
+            <hr>
+
+            <dl class="row h4">
+                <dt class="col-sm-4">Bill ID</dt>
+                <dd class="col-sm-8">{{ object.id }}</dd>
+                
+                <dt class="col-sm-4">Date</dt>
+                <dd class="col-sm-8">{{ object.date }}</dd>
+                
+                <dt class="col-sm-4">Time</dt>
+                <dd class="col-sm-8">{{ object.time }}</dd>
+                
+                <dt class="col-sm-4">Total</dt>
+                <dd class="col-sm-8">{{ object.total }}</dd>
+            </dl>
+            <hr>
+
+            <p class="py-5 text-muted h5">Print memo and return to cart</p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between">
+            <div class="col-auto">
+                <button type="button" class="btn btn-outline-danger btn-lg" id="btn_return">Return to cart</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-success btn-lg" id="btn_print">Print memo</button>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+
+<div class="col-sm-5 p-4 text-monospace overflow-auto" id="memo_container">
+    <div class="card" id="memo_area">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Memo</strong></h5>
+        </div>
+        <div class="card-body overflow-auto" id="memo_content">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <td class="text-center" colspan="3">Shop name</td>
+                        <td class="text-end align-middle" colspan="3" rowspan="2">{{ object.date }} {{ object.time }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="3">Shop address</td>
+                    </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>product</th>
+                        <th>unit</th>
+                        <th>price/unit</th>
+                        <th>quantity</th>
+                        <th>price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for memo_item in object.memo %}
+                    <tr>
+                    {% for value in memo_item.values %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4"></th>
+                        <th class="text-center" colspan="2">total={{ object.total }}</th>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="6">Thank you for being with us.</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

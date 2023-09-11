@@ -1,0 +1,113 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Cash Register{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'stock/css/style_bill_list.css' %}">
+<script src="{% static 'stock/js/script_bill_list.js' %}"></script>
+{% endblock %}
+
+{% block navtitle %}Cash Register{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card" id="bill_box">
+        <div class="row px-3 pt-3">
+
+            <div class="input-group">
+                <input type="text" id="input_bill" class="form-control" placeholder="Search by bill ID" aria-label="Bill">
+            </div>
+            <h6 class="text-end text-muted py-2">Click on a bill below to see details</h6>
+        </div>
+
+        <div class="card-body overflow-auto">
+            {% if object_list %}
+            <table class="table" id="bill_list">
+                <tbody>
+                    {% for bill in object_list %}
+                    <tr>
+                        <td><a href="{{ bill.get_absolute_url }}">{{ bill }}</a></td>
+                        <td>{{ bill.date }}</td>
+                        <td>{{ bill.time }}</td>
+                        <td>{{ bill.product_count }} product(s)</td>
+                        <td>{{ bill.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-justify my-4 text-center">
+                No bill to show
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="analysis_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Cash Analysis</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <h4>Today</h4>
+            <dl class="row">
+                <dt class="col-sm-8">Number of transaction(s):</dt>
+                <dd class="col-sm-4">{{ today_bill_count }}</dd>
+                
+                <dt class="col-sm-8">Product(s) sold:</dt>
+                <dd class="col-sm-4">{{ today_sale_count }}</dd>
+
+                <dt class="col-sm-8">Sale cost:</dt>
+                <dd class="col-sm-4">{{ today_total_cost }}</dd>
+
+                <dt class="col-sm-8">Sale price:</dt>
+                <dd class="col-sm-4">{{ today_total_price }}</dd>
+
+                <dt class="col-sm-8">Profit:</dt>
+                <dd class="col-sm-4">{{ today_profit }}</dd>
+            </dl>
+            <hr>
+
+            <h4>This month</h4>
+            <dl class="row">
+                <dt class="col-sm-8">Number of transaction(s):</dt>
+                <dd class="col-sm-4">{{ month_bill_count }}</dd>
+                
+                <dt class="col-sm-8">Product(s) sold:</dt>
+                <dd class="col-sm-4">{{ month_sale_count }}</dd>
+
+                <dt class="col-sm-8">Sale cost:</dt>
+                <dd class="col-sm-4">{{ month_total_cost }}</dd>
+
+                <dt class="col-sm-8">Sale price:</dt>
+                <dd class="col-sm-4">{{ month_total_price }}</dd>
+
+                <dt class="col-sm-8">Monthly profit:</dt>
+                <dd class="col-sm-4">{{ month_profit }}</dd>
+            </dl>
+            <hr>
+
+            <h4>All time</h4>
+            <dl class="row">
+                <dt class="col-sm-8">Number of transaction(s):</dt>
+                <dd class="col-sm-4">{{ bill_count }}</dd>
+                
+                <dt class="col-sm-8">Product(s) sold:</dt>
+                <dd class="col-sm-4">{{ sale_count }}</dd>
+
+                <dt class="col-sm-8">Sale cost:</dt>
+                <dd class="col-sm-4">{{ total_cost }}</dd>
+
+                <dt class="col-sm-8">Sale price:</dt>
+                <dd class="col-sm-4">{{ total_price }}</dd>
+
+                <dt class="col-sm-8">Total profit:</dt>
+                <dd class="col-sm-4">{{ profit }}</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

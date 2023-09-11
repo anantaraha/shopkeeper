@@ -1,0 +1,110 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Product Detail{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'stock/css/style_product_detail.css' %}" />
+{% endblock %}
+
+{% block navtitle %}Product Detail: {{ object }}{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card p-2" id="product_box">
+        <div class="card-body overflow-auto">
+            <h2 class="display-6 pb-2">{{ object.name }}</h2>
+            <div class="row">
+                <h4 class="text-muted">{{ object.brand }}</h4>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    <a class="btn btn-primary" href="{% url 'product-stock-edit' pk=object.id %}">Update stock</a>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-primary" href="{% url 'product-edit' pk=object.id %}">Edit details</a>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row d-flex justify-content-start">
+                <div class="col-auto">
+                    <h4>Category <a href="{{ object.category.get_absolute_url }}?back={{ request.get_full_path|urlencode:'' }}"><span class="badge bg-secondary rounded-pill">{{ object.category }}</span></a></h4>
+                </div>
+                <div class="col-auto">
+                    <h4>Popularity <span class="badge bg-secondary rounded-pill">{{ product.popularity }}</span></h4>
+                </div>
+            </div>
+            <hr>
+
+            <h4 class="text-title">Stock status</h4>
+            <div class="row">
+
+            </div>
+            <dl class="row">
+                <dt class="col-sm-3">Cost per unit:</dt>
+                <dd class="col-sm-3">{{ object.cost }}</dd>
+                <dt class="col-sm-3">Enabled:</dt>
+                {% if object.enabled %}
+                <dd class="col-sm-3"><span class="fw-bold text-success">Yes</span></dd>
+                {% else %}
+                <dd class="col-sm-3"><span class="fw-bold text-danger">No</span></dd>
+                {% endif %}
+                
+                <dt class="col-sm-3">Price per unit:</dt>
+                <dd class="col-sm-3">{{ object.price }}</dd>
+                <dt class="col-sm-3">Available:</dt>
+                {% if object.available %}
+                <dd class="col-sm-3"><span class="fw-bold text-success">Yes</span></dd>
+                {% else %}
+                <dd class="col-sm-3"><span class="fw-bold text-danger">No</span></dd>
+                {% endif %}
+                
+                <dt class="col-sm-3">Profit per unit:</dt>
+                <dd class="col-sm-3">{{ object.profit }}</dd>
+                <dt class="col-sm-3">Quantity:</dt>
+                <dd class="col-sm-3">{{ object.quantity }} {{ object.unit_label }}</dd>
+
+                <dt class="col-sm-3">Total stock value:</dt>
+                <dd class="col-sm-3">{{ stock_cost }}</dd>
+                <dt class="col-sm-3">Unit of measurement:</dt>
+                <dd class="col-sm-3">{{ object.unit_label }}</dd>
+
+                <dt class="col-sm-3">Total stock price:</dt>
+                <dd class="col-sm-3">{{ stock_price }}</dd>
+            </dl>
+            <hr>
+            
+            <h4>Description</h4>
+            {% if object.description %}
+            <p class="text-justify">{{ object.description }}</p>
+            {% else %}
+            <p class="text-justify">No description provided</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="recent_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Recent sales of this product</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <div class="list-group-flush">
+                {% if product_sales %}
+                {% for product_sale in product_sales %}
+                <li class="list-group-item">
+                    [{{ product_sale.bill.date }}, {{ product_sale.bill.time }}] [Quantity: {{ product_sale.quantity }}]
+                    <br>
+                    <a href="{{ product_sale.bill.get_absolute_url }}?back={{ request.get_full_path|urlencode:'' }}">{{ product_sale.bill }}</a>
+                </li>
+                {% endfor %}
+                {% else %}
+                <h5 class="text-muted text-center my-5">No recent sales for this product</h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

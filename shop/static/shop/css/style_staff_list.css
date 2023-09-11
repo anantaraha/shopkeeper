@@ -1,0 +1,25 @@
+#main_panel {
+    height: 100%;
+    max-height: 100%;
+}
+#staff_box {
+    height: 100%;
+    max-height: 100%;
+}
+
+#side_panel {
+    background-color: #f5f5f5;
+    height: 100%;
+    max-height: 100%;
+}
+#details_box {
+    height: 100%;
+    max-height: 100%;
+}
+#area_details {
+    width: 100%;
+}
+#detail_full {
+    height: 100%;
+    max-height: 100%;
+}

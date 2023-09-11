@@ -1,0 +1,16 @@
+{% extends 'form_generic.html' %}
+
+{% block title %}New Staff{% endblock %}
+
+{% block cardtitle %}New Staff{% endblock %}
+
+{% block description %}
+<p class="text-justify">
+    Add a new staff identity so that he/she can access to staff level tools like cart, etc.
+</p>
+{% endblock %}
+
+{% block action %}
+<a href="{% url 'staffs' %}" class="btn btn-outline-secondary">Cancel</a>
+<input class="btn btn-success" type="submit" value="Create Staff" form="my_form">
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'form_generic.html' %}
+
+{% block dependancy %}
+{{ block.super }}
+<script>
+    $(document).ready(function () {
+        /* Initial treatements */
+        if ($('#id_enabled').prop('checked')) {
+            $('#all_field_area').show();
+        } else {
+            $('#all_field_area').hide();
+        }
+        if($('#id_action :checked').val() != 'no') {
+            $('#quantity_area').show();
+        } else {
+            $('#quantity_area').hide();
+        }
+        /* Click events */
+        $('#id_enabled').change(function () {
+            let enabled = $(this).prop('checked');
+            if (enabled) {
+                $('#all_field_area').show();
+            } else {
+                $('#all_field_area').hide();
+            }
+        });
+        $('#id_action').change(function () {
+            let enabled = $(this).find(':checked').val() != 'no';
+            if(enabled) {
+                $('#quantity_area').show();
+            } else {
+                $('#quantity_area').hide();
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block title %}Update Stock{% endblock %}
+
+{% block cardtitle %}Update Stock{% endblock %}
+
+{% block description %}
+<h2>{{ object }}</h2>
+{% endblock %}
+
+{% block form %}
+<form id="my_form" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label class="form-label" for="{{ form.enabled.id_for_label }}">{{ form.enabled.label }}</label>
+        {{ form.enabled }}
+        <span class="text-danger"><small>{{ form.enabled.errors }}</small></span>
+    </div>
+    <div id="all_field_area">
+        <div class="mb-3">
+            <label class="form-label" for="{{ form.cost.id_for_label }}">{{ form.cost.label }}</label>
+            {{ form.cost }}
+            <span class="text-danger"><small>{{ form.cost.errors }}</small></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="{{ form.price.id_for_label }}">{{ form.price.label }}</label>
+            {{ form.price }}
+            <span class="text-danger"><small>{{ form.price.errors }}</small></span>
+        </div>
+        <div class="input-group mb-3 border p-3">
+            <div class="col-sm-6">
+                <label class="form-label" for="{{ form.action.id_for_label }}">{{ form.action.label }}</label>
+                {{ form.action }}
+                <span class="text-danger"><small>{{ form.action.errors }}</small></span>
+            </div>
+            <div class="col-sm-6" id="quantity_area">
+                <label class="form-label" for="{{ form.add_qty.id_for_label }}">{{ form.add_qty.label }}</label>
+                {{ form.add_qty }}
+                <span class="text-danger"><small>{{ form.add_qty.errors }}</small></span>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block action %}
+<a href="{{ object.get_absolute_url }}" class="btn btn-outline-secondary">Cancel</a>
+<input class="btn btn-success" type="submit" value="Update" form="my_form">
+{% endblock %}

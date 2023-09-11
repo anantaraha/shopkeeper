@@ -1,0 +1,20 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+{% load static %}
+<div class="container-fluid" style="height: 100%; max-height: 100%; background-position: bottom; background-size: cover; background-image: url({% static 'res/home-bg.png' %});">
+    <div class="row me-4" style="height: 100%; max-height: 100%;">
+        <div class="col-sm-8 mt-auto">
+            <div class="row ps-3" style="background-image: linear-gradient(to right, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.0));">
+                <h2 class="display-3 pt-1 text-light" style="font-family: Lobster, cursive;">Shopkeeper</h2>
+                <p class="p-2 blockquote text-light">
+                    <span style="font-family: Lobster, cursive;">Shopkeeper</span> is an all-in-one shop management tool that helps to run a super shop conveniently and flawlessly. With a minimal yet powerful interface, it provides utilities for the cash counter, stock management, employee management and simplified statistics.
+                </p>
+            </div>
+        </div>
+        <div class="col-sm-4" style="height: 100%; overflow-y: auto;">
+            {% block functions %}{% endblock %}
+        </div>
+    </div>
+</div> 
+{% endblock %}

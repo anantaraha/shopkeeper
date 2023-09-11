@@ -1,0 +1,46 @@
+{% extends 'reg_generic.html' %}
+
+{% block formfields %}
+
+{% if form.errors or next %}
+
+<div class="d-flex p-2 bg-light text-danger">
+    <div class="col-auto my-auto px-2">
+        <span class="material-icons">error_outline</span>
+    </div>
+    <div class="col my-auto">
+        <small>
+            {% if form.errors %}
+            Your username or password did not match. Please try again.
+            {% endif %}
+            {% if next %}
+            {% if user.is_authenticated %}
+            You have no permission to view this page.
+            {% else %}
+            You are not logged in, please login to view this page.
+            {% endif %}
+            {% endif %}
+        </small>
+    </div>
+</div>
+
+{% endif %}
+
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="row mb-3 align-items-center">
+        <label for="{{ form.username.id_for_label }}" class="col-sm-3 col-form-label">{{ form.username.label_tag }}</label>
+        <div class="col-sm-9">{{ form.username }}</div>
+    </div>
+    <div class="row mb-3 align-items-center">
+        <label for="{{ form.password.id_for_label }}" class="col-sm-3 col-form-label">{{ form.password.label_tag }}</label>
+        <div class="col-sm-9">{{ form.password}}</div>
+    </div>
+    <div class="d-flex mb-3 justify-content-center">
+        <input type="submit" class="btn btn-primary align-self-center" value="login" />
+    </div>
+    <input type="hidden" name="next" value="{{ next }}" />
+</form>
+<a class="btn btn-link" href="{% url 'password_reset' %}">Lost password?</a>
+
+{% endblock %}

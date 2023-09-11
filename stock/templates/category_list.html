@@ -1,0 +1,107 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Category Viewer{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'stock/css/style_category_list.css' %}">
+<script src="{% static 'stock/js/script_category_list.js' %}"></script>
+{% endblock %}
+
+{% block navtitle %}Category Viewer{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card" id="category_box">
+        <div class="row px-3 pt-3">
+
+            <div class="input-group">
+                <div class="col-sm-9">
+                    <input type="text" id="input_category" class="form-control" placeholder="Search for category with label, popularity etc." aria-label="Cateogry">
+                </div>
+                <div class="col-sm-3 d-grid ps-3">
+                    <a href="{% url 'new-category' %}" class="btn btn-primary">Add new category</a>
+                </div>
+            </div>
+            <h6 class="text-end text-muted py-2">Click on a category below to see details</h6>
+        </div>
+
+        <div class="card-body overflow-auto">
+            {% if object_list %}
+            <table class="table" id="category_list">
+                <thead>
+                    <tr scope="col">
+                        <td>Label</td>
+                        <td>Popularity</td>
+                        <td>Products</td>
+                        <td>Sales</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in object_list %}
+                    <tr>
+                        <td><a href="{{ category.get_absolute_url }}">{{ category.label }}</a></td>
+                        <td>{{ category.popularity }}</td>
+                        <td>{{ category.product_count }} product(s)</td>
+                        {% if category.sale_count %}
+                        <td><span class="text-success">{{ category.sale_count }} sale(s)</span></td>
+                        {% else %}
+                        <td><span class="text-secondary">{{ category.sale_count }} sale(s)</span></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-justify my-4 text-center">
+                No category to show
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="insight_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Category Insights</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <h4>Count</h4>
+            <p class="text-justify">
+                Currently, there are {{ category_count }} categories of products.
+            </p>
+            <hr>
+
+            <h4>Categories with maximum product(s)</h4>
+            {% if categories_max_product %}
+            <div class="list-group-flush">
+                {% for category in categories_max_product %}
+                <a class="list-group-item d-flex justify-content-between" href="{{ category.get_absolute_url }}">{{ category.label }} <span class="badge bg-secondary rounded-pill mx-2">{{ category.product_count }} product(s)</span></a>
+                {% endfor %}
+            </div>
+            
+            {% else %}
+            <p class="text-justify mx-auto">
+                Not enough product(s)/categorie(s) for this metric
+            </p>
+            {% endif %}
+            <hr>
+
+            <h4>Highest sold categories</h4>
+            {% if categories_max_value %}
+            <div class="list-group-flush">
+                {% for category in categories_max_value %}
+                <a class="list-group-item d-flex justify-content-between" href="{{ category.get_absolute_url }}">{{ category.label }} <span class="badge bg-secondary rounded-pill mx-2">{{ category.sale_count }} sale(s)</span></a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-justify mx-auto">
+                Not enough product(s)/categorie(s) for this metric
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

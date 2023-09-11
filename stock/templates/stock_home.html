@@ -1,0 +1,56 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block navtitle %}Stock{% endblock %}
+
+{% block content %}
+<div class="row px-5 py-4">
+    <div class="col-sm-4 p-5">
+        <div class="card">
+            {% load static %}
+            <img src="{% static 'stock/res/product-manager-bg.png' %}" class="card-img-top" alt="Product image">
+            <div class="card-body">
+                <h5 class="card-title">Product Manager</h5>
+                <ul class="card-text">
+                  <li>Manage current stock of products</li>
+                  <li>See and edit products, details etc.</li>
+                  <li>Current stock overview</li>
+                </ul>
+                <a href="{% url 'products' %}" class="stretched-link">All products</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4 p-5">
+        <div class="card">
+            {% load static %}
+            <img src="{% static 'stock/res/category-viewer-bg.png' %}" class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title">Category Viewer</h5>
+              <ul class="card-text">
+                <li>See and edit product categories</li>
+                <li>See categorized products and performance</li>
+                <li>Top sold categories</li>
+              </ul>
+              <a href="{% url 'categories' %}" class="stretched-link">Categories</a>
+            </div>
+          </div>
+    </div>
+    <div class="col-sm-4 p-5">
+        <div class="card">
+            {% load static %}
+            <img src="{% static 'stock/res/cash-register-bg.png' %}" class="card-img-top" alt="Bill image">
+            <div class="card-body">
+              <h5 class="card-title">Cash register</h5>
+              <ul class="card-text">
+                <li>See bills made by customers at checkout</li>
+                <li>See transaction details</li>
+                <li>Daily, monthly and overall cash flow</li>
+              </ul>
+              <a href="{% url 'bills' %}" class="stretched-link">Bills</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

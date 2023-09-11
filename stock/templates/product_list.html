@@ -1,0 +1,164 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Product Manager{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'stock/css/style_product_list.css' %}">
+<script src="{% static 'stock/js/script_product_list.js' %}"></script>
+{% endblock %}
+
+{% block navtitle %}Product Manager{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card" id="product_box">
+        <div class="row px-3 pt-3">
+            <div class="input-group">
+                <div class="col-sm-9">
+                    <input type="text" id="input_product" class="form-control" placeholder="Search by product name" aria-label="Product">
+                </div>
+                <div class="col-sm-3 d-grid ps-3">
+                    <a href="{% url 'new-product' %}" class="btn btn-primary">Add new product</a>
+                </div>
+            </div>
+
+            
+            
+            <h6 class="text-muted py-2">Click on a product below to see details</h6>
+        </div>
+        <ul class="nav nav-tabs justify-content-center" id="tab_view" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab_all" data-bs-toggle="tab" data-bs-target="#all_products_section" type="button" role="tab" aria-controls="all_products_section" aria-selected="true"><strong>All products ({{ product_count }})</strong></button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab_available" data-bs-toggle="tab" data-bs-target="#available_products_section" type="button" role="tab" aria-controls="available_products_section" aria-selected="false"><strong>Available products ({{ available_product_count }})</strong></button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab_unavailable" data-bs-toggle="tab" data-bs-target="#unavailable_products_section" type="button" role="tab" aria-controls="unavailable_products_section" aria-selected="false"><strong>Unavailable products ({{ unavailable_product_count }})</strong></button>
+            </li>
+        </ul>
+
+        <div class="card-body overflow-auto">
+            <div class="tab-content">
+
+                <div class="tab-pane fade show active" id="all_products_section" role="tabpanel" aria-labelledby="tab_all">
+                    {% if product_count %}
+                    <table class="table">
+                        <tbody>
+                            {% for product in object_list %}
+                            <tr>
+                                <td><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                                <td>{{ product.brand }}</td>
+                                {% if product.available %}
+                                <td><span class="text-success">{{ product.quantity }} {{ product.unit_label }}</span></td>
+                                {% else %}
+                                <td><span class="text-danger">{{ product.quantity }} {{ product.unit_label }}</span></td>
+                                {% endif %}
+                                <td>{{ product.price }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-justify my-4 text-center">
+                        Currently, no product in stock.
+                    </p>
+                    {% endif %}
+                </div>
+
+                <div class="tab-pane fade" id="available_products_section" role="tabpanel" aria-labelledby="tab_available">
+                    {% if available_product_count %}
+                    <table class="table">
+                        <tbody>
+                            {% for product in object_list %}
+                            {% if product.available %}
+                            <tr>
+                                <td><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                                <td>{{ product.brand }}</td>
+                                <td><span class="text-success">{{ product.quantity }} {{ product.unit_label }}</span></td>
+                                <td>{{ product.price }}</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-justify my-4 text-center">
+                        Currently, no available product in stock.
+                    </p>
+                    {% endif %}
+                </div>
+
+                <div class="tab-pane fade" id="unavailable_products_section" role="tabpanel" aria-labelledby="tab_unavailable">
+                    {% if unavailable_product_count %}
+                    <table class="table">
+                        <tbody>
+                            {% for product in object_list %}
+                            {% if not product.available %}
+                            <tr>
+                                <td><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></td>
+                                <td>{{ product.brand }}</td>
+                                <td><span class="text-danger">{{ product.quantity }} {{ product.unit_label }}</span></td>
+                                <td>{{ product.price }}</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <p class="text-justify my-4 text-center">
+                        Currently, no unavailable product in stock.
+                    </p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="recent_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>Product Insights</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <h4>Current stock value</h4>
+            <dl class="row">
+                <dt class="col-sm-8">Total cost of stock:</dt>
+                <dd class="col-sm-4">{{ total_stock_cost }}</dd>
+                
+                <dt class="col-sm-8">Total price of stock:</dt>
+                <dd class="col-sm-4">{{ total_stock_price }}</dd>
+                
+                <dt class="col-sm-8">Expected profit:</dt>
+                <dd class="col-sm-4">{{ total_profit }}</dd>
+            </dl>
+            <hr>
+
+            <h4>Top sold products</h4>
+            {% if top_sold_products %}
+            {% for product in top_sold_products %}
+            <p class="text-justify">
+                <div class="d-flex justify-content-between">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    <a href="{{ product.category.get_absolute_url }}?back={{ request.get_full_path|urlencode:'' }}">
+                        <span class="badge bg-secondary rounded-pill">{{ product.category.label }}</span>
+                    </a>
+                </div>
+                Popularity: {{ product.popularity }}
+                <br>
+                Sold {{ product.sale_count }} time(s)
+            </p>
+            {% endfor %}
+            {% else %}
+            <p class="text-justify mx-auto">
+                Not enough sale(s) for this metric
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

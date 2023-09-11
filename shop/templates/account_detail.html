@@ -1,0 +1,106 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}My Account{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'shop/css/style_staff_detail.css' %}" />
+{% endblock %}
+
+{% block navtitle %}My Account{% endblock %}
+
+{% block content %}
+<div class="col-sm-8 p-4" id="main_panel">
+    <div class="card p-2" id="staff_box">
+        <div class="px-3">
+            <h2 class="display-6 pt-3">{{ user.staff.full_name }} <span class="fs-4 fst-italic text-muted">@{{ user.staff.username }}</span></h2>
+            <div class="row">
+                <div class="col-auto">
+                    {% if user.is_superuser %}
+                    <h4>
+                        <span class="badge rounded-pill bg-secondary">🛡️Superuser</span>
+                    </h4>
+                    {% elif user.staff.admin %}
+                    <h4>
+                        <span class="badge rounded-pill bg-secondary">⭐Admin</span>
+                    </h4>
+                    {% endif %}
+                </div>
+                <div class="col-auto ms-auto">
+                    <a class="btn btn-primary" href="{% url 'account-edit' %}">Edit account details</a>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-primary" href="{% url 'account-credential-edit' %}">Edit account credentials</a>
+                </div>
+            </div>
+            <hr class="mb-0 pb-0">
+        </div>
+        <div class="card-body overflow-auto">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Staff ID</td>
+                        <td id="info_id">{{ user.staff.staff_id }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Username</td>
+                        <td id="info_username">{{ user.staff.username }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>First name</td>
+                        <td id="info_first_name">{{ user.staff.first_name }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Last name</td>
+                        <td id="info_last_name">{{ user.staff.last_name }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Email</td>
+                        <td id="info_email">{{ user.staff.email }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>Born</td>
+                        <td id="info_born">{{ user.staff.born }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Age</td>
+                        <td id="info_age">{{ user.staff.age }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Salary</td>
+                        <td id="info_salary">{{ user.staff.salary }}</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Address</td>
+                        <td id="info_address">{{ user.staff.address }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 p-4" id="side_panel">
+    <div class="card" id="activity_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>My activities</strong></h5>
+        </div>
+        <div class="card-body overflow-auto">
+            <div class="list-group-flush">
+                <div class="list-group-flush">
+                    <h4>Last login time</h4>
+                    <h6 class="fs-6 text-muted">{{ user.last_login }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

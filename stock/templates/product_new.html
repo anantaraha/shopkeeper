@@ -1,0 +1,16 @@
+{% extends 'form_generic.html' %}
+
+{% block title %}New Product{% endblock %}
+
+{% block cardtitle %}New Product{% endblock %}
+
+{% block description %}
+<p class="text-justify">
+    Add a new product identity to stock. Set initial quantity, price, cost etc.
+</p>
+{% endblock %}
+
+{% block action %}
+<a href="{% url 'products' %}" class="btn btn-outline-secondary">Cancel</a>
+<input class="btn btn-success" type="submit" value="Create Product" form="my_form">
+{% endblock %}

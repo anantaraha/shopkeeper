@@ -1,0 +1,86 @@
+{% extends 'home_generic.html' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block dependancy %}
+{% load static %}
+<script src="{% static 'shop/js/script_shop_home.js' %}"></script>
+{% endblock %}
+
+{% block functions %}
+
+<div class="col-auto px-5" style="overflow: auto; height: 100%; background-image: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.0));">
+
+    <div class="row pt-3">
+        <div class="p-3">
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase" style="letter-spacing: 32px; margin-right: -32px;">Cart</h5>
+                <a href="{% url 'cart' %}" class="stretched-link"></a>
+            </div>
+        </div>
+        <div class="p-3">
+            {% if user.is_superuser%}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase text-center" style="letter-spacing: 30px; margin-right: -30px;">Stock</h5>
+                <a href="{% url 'stock-home' %}" class="stretched-link"></a>
+            </div>
+            {% elif user.staff.admin %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase text-center" style="letter-spacing: 30px; margin-right: -30px;">Stock</h5>
+                <a href="{% url 'stock-home' %}" class="stretched-link"></a>
+            </div>
+            {% else %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title mt-4 mb-1 fs-4 text-uppercase text-center text-muted" style="letter-spacing: 30px; margin-right: -30px;">Stock</h5>
+                <div class="card-footer pb-0 text-danger">
+                    <h6 class="fs-6"><span class="material-icons fs-5 align-middle">lock</span> Admin login required</h6>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="p-3">
+            {% if user.is_superuser or user.staff.admin %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase" style="letter-spacing: 36px; margin-right: -36px;">Bills</h5>
+                <a href="{% url 'bills' %}" class="stretched-link"></a>
+            </div>
+            {% elif user.staff.admin %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase" style="letter-spacing: 36px; margin-right: -36px;">Bills</h5>
+                <a href="{% url 'bills' %}" class="stretched-link"></a>
+            </div>
+            {% else %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title mt-4 mb-1 fs-4 text-uppercase text-center text-muted" style="letter-spacing: 36px; margin-right: -36px;">Bills</h5>
+                <div class="card-footer pb-0 text-danger">
+                    <h6 class="fs-6"><span class="material-icons fs-5 align-middle">lock</span> Admin login required</h6>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        <div class="p-3">
+            {% if user.is_superuser or user.staff.admin %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase" style="letter-spacing: 28px; margin-right: -28px;">Staffs</h5>
+                <a href="{% url 'staffs' %}" class="stretched-link"></a>
+            </div>
+            {% elif user.staff.admin %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title my-4 fs-4 text-uppercase" style="letter-spacing: 28px; margin-right: -28px;">Staffs</h5>
+                <a href="{% url 'staffs' %}" class="stretched-link"></a>
+            </div>
+            {% else %}
+            <div class="card text-center text-light bg-transparent border-light border-2">
+                <h5 class="card-title mt-4 mb-1 fs-4 text-uppercase text-center text-muted" style="letter-spacing: 28px; margin-right: -28px;">Staffs</h5>
+                <div class="card-footer pb-0 text-danger">
+                    <h6 class="fs-6"><span class="material-icons fs-5 align-middle">lock</span> Admin login required</h6>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+    </div>
+    
+</div>
+
+{% endblock %}

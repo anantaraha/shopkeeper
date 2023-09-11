@@ -1,0 +1,65 @@
+{% extends 'base_generic.html' %}
+
+{% block dependancy %}
+
+<style>
+    #edit_panel {
+        height: 100%;
+        max-height: 100%;
+    }
+    #edit_box {
+        height: 100%;
+        max-height: 100%;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="col-sm-6 mx-auto p-4" id="edit_panel">
+    <div class="card" id="edit_box">
+        <div class="pt-2 pb-1 border-bottom text-center text-secondary">
+            <h5><strong>
+                {% block cardtitle %}
+                {% endblock %}
+            </strong></h5>
+        </div>
+        
+        <div class="p-3 border-bottom">
+            {% block description %}
+            {% endblock %}
+        </div>
+
+        <div class="card-body overflow-auto">
+            {% block form %}
+            <form id="my_form" method="POST">
+                {% csrf_token %}
+                
+                <p>
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                </p>
+                
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    <span class="text-danger"><small>{{ field.errors }}</small></span>
+                </div>
+                {% endfor %}
+            </form>
+            {% endblock %}
+        </div>
+
+        <div class="card-footer p-3 d-flex justify-content-between">
+            {% block action %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

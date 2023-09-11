@@ -1,0 +1,21 @@
+{% extends 'form_generic.html' %}
+
+{% block title %}Delete Staff{% endblock %}
+
+{% block cardtitle %}Delete Staff{% endblock %}
+
+{% block description %}
+<h2>{{ object.full_name }} <span class="fs-5 fst-italic text-muted">@{{ object }}</span></h2>
+{% endblock %}
+
+{% block form %}
+{{ block.super }}
+<p>
+    This staff will be deleted. Are you sure you want to delete this staff?
+</p>
+{% endblock %}
+
+{% block action %}
+<a href="{{ object.get_absolute_url }}" class="btn btn-outline-secondary">Cancel</a>
+<input class="btn btn-danger" type="submit" value="Confirm delete" form="my_form">
+{% endblock %}

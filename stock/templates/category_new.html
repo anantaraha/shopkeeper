@@ -1,0 +1,16 @@
+{% extends 'form_generic.html' %}
+
+{% block title %}New Category{% endblock %}
+
+{% block cardtitle %}New Category{% endblock %}
+
+{% block description %}
+<p class="text-justify">
+    Give a meaningful label for the new category. The label should be clear enough to represent the desired products.
+</p>
+{% endblock %}
+
+{% block action %}
+<a href="{% url 'categories' %}" class="btn btn-outline-secondary">Cancel</a>
+<input class="btn btn-success" type="submit" value="Create Category" form="my_form">
+{% endblock %}
